@@ -137,6 +137,17 @@ object List { // `List` companion object. Contains functions for creating and wo
     case (Cons(h1,t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1,t2)(f))
   }
 
+  def startsWith[A](lst: List[A], prefix: List[A]): Boolean = (lst, prefix) match {
+    case (_, Nil) => true
+    case (Cons(h1, t1), Cons(h2, t2)) if h1 == h2 => startsWith(t1, t2)
+    case _ => false
+}
+  def hasSubSequence[A](lst: List[A], sub: List[A]): Boolean = lst match {
+    case Nil => sub == Nil
+    case _ if startsWith(lst, sub) => true
+    case Cons(_, t) => hasSubSequence(t, sub)
+  }
+
 }
 
   val myList = List(1,2,3)
@@ -166,6 +177,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(List.filter2(myList2)(_ % 2 == 0))
   println(List.addLists(List(1,2,3), List(4,5,6)))
   println(List.zipWith(List(1,2,3), List(4,5,6))((_,_)))
-
+  println(List.hasSubSequence(List(1,2,3,4),List(2,3)))
+  print(List(1,2)==List(1,2))
 
 }
