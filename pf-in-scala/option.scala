@@ -1,4 +1,5 @@
 // Start writing your ScalaFiddle code here
+object Option extends App {
 import scala.{Option => _, Some => _, Either => _, _} // hide std library `Option`, `Some` and `Either`, since we are writing our own in this chapter
 
 sealed trait Option[+A] {
@@ -44,27 +45,66 @@ object Option {
     else Some(xs.sum / xs.length)
   def variance(xs: Seq[Double]): Option[Double] = ???
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = ???
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = (a, b) match {
+    case (None, _) => None
+    case (_, None) => None
+    case (Some(x), Some(y)) => Some(f(x, y))
+  }
 
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = ???
+  def map3[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = for {
+    x <- a
+    y <- b
+  } yield f(x, y)
 
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = ???
+  def map4[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = a.flatMap(x => b.map(f(x, _)))
+
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = {
+    traverse(a)(x => x)
 }
 
-val myOption1 = Some(2)
-val myOption2:Option[Int] = None
-println(myOption1.map(x => x * 2))
-println(myOption2.map(x => x * 2))
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+    def go(l:List[A], r: List[B]): Option[List[B]] = {
+      l match {
+        case Nil => Some(r)
+        case h::t => f(h).flatMap(x => go(t, x::r))
+      }
+    }
+    go(a.reverse,Nil)
+    //a.foldRight[Option[List[B]]](Some(Nil))((h, end) => map2(f(h),end)(_::_))
+  }
+}
 
-println(myOption1.flatMap(x => Some(x * 3)))
-println(myOption2.flatMap(x => Some(x * 3)))
+  val myOption1 = Some(2)
+  val myOption2:Option[Int] = None
+  println(myOption1.map(x => x * 2))
+  println(myOption2.map(x => x * 2))
 
-println(myOption1.filter(_>1))
-println(myOption1.filter(_>3))
-println(myOption2.filter(_>1))
+  println(myOption1.flatMap(x => Some(x * 3)))
+  println(myOption2.flatMap(x => Some(x * 3)))
 
-println(myOption1.getOrElse(0))
-println(myOption2.getOrElse(0))
+  println(myOption1.filter(_>1))
+  println(myOption1.filter(_>3))
+  println(myOption2.filter(_>1))
 
-println(myOption1.orElse(Some(0)))
-println(myOption2.orElse(Some(0)))
+  println(myOption1.getOrElse(0))
+  println(myOption2.getOrElse(0))
+
+  println(myOption1.orElse(Some(0)))
+  println(myOption2.orElse(Some(0)))
+
+  println(Option.map2(myOption1, myOption1)(_+_))
+  println(Option.map2(myOption1, myOption2)(_+_))
+
+  println(Option.map3(myOption1, myOption1)(_+_))
+  println(Option.map3(myOption1, myOption2)(_+_))
+
+  println(Option.map4(myOption1, myOption1)(_+_))
+  println(Option.map4(myOption1, myOption2)(_+_))
+
+  println(Option.sequence(List(myOption1, myOption1, myOption1)))
+  println(Option.sequence(List(myOption1, myOption2, myOption1)))
+
+  println(Option.traverse(List(1,2,3,4))(x => if (x > 2) Some(x) else None))
+  println(Option.traverse(List(1,2,3,4))(x => if (x > 0) Some(x) else None))
+
+}
