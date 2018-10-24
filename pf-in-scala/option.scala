@@ -1,5 +1,4 @@
 // Start writing your ScalaFiddle code here
-object Option extends App {
 import scala.{Option => _, Some => _, Either => _, _} // hide std library `Option`, `Some` and `Either`, since we are writing our own in this chapter
 
 sealed trait Option[+A] {
@@ -62,16 +61,7 @@ object Option {
     traverse(a)(x => x)
 }
 
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
-    def go(l:List[A], r: List[B]): Option[List[B]] = {
-      l match {
-        case Nil => Some(r)
-        case h::t => f(h).flatMap(x => go(t, x::r))
-      }
-    }
-    go(a.reverse,Nil)
-    //a.foldRight[Option[List[B]]](Some(Nil))((h, end) => map2(f(h),end)(_::_))
-  }
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a.foldRight[Option[List[B]]](Some(Nil))((h, t) => map2(f(h), t)(_::_))
 }
 
   val myOption1 = Some(2)
@@ -107,4 +97,3 @@ object Option {
   println(Option.traverse(List(1,2,3,4))(x => if (x > 2) Some(x) else None))
   println(Option.traverse(List(1,2,3,4))(x => if (x > 0) Some(x) else None))
 
-}
