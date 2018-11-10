@@ -1,3 +1,5 @@
+import scalaz.Choice
+
 object Par extends App{
 
   import java.util.concurrent._
@@ -60,10 +62,37 @@ object Par extends App{
     def delay[A](fa: => Par[A]): Par[A] =
       es => fa(es)
 
-    def choice[A](cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] =
+    def choice[A](cond: Par[Boolean])(t: Par[A], f: Par[A]): Par[A] = {
+      val n = map(cond)((x: Boolean) => if (x) 0 else 1)
+      choiceN(n)(List(t, f))
+    }
+
+    def choiceN[A](n: Par[Int])(choices: List[Par[A]]): Par[A] = {
+      choiseGen(n)(choices(_))
+    }
+
+    def choiseGen[A, B](a: Par[A])(f: A => Par[B]):Par[B] = {
+      es => {
+        f(run(es)(a).get)(es)
+      }
+    }
+
+    def flatMap[A,B](a: Par[A])(f: A => Par[B]): Par[B] = {
+      join(map(a)(f))
+    }
+
+    def joinFlatMap[A](a: Par[Par[A]]):Par[A] = {
+      flatMap(a)(x => x)
+    }
+
+    def join[A](a: Par[Par[A]]):Par[A] = {
       es =>
-        if (run(es)(cond).get) t(es) // Notice we are blocking on the result of `cond`.
-        else f(es)
+        run(es)(run(es)(a).get())
+    }
+
+    def choiseMap[K, V](key: Par[K])(choices: Map[K, Par[V]]): Par[V] = {
+      choiseGen(key)(choices(_))
+    }
 
     /* Gives us infix syntax for `Par`. */
     implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
