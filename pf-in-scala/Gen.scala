@@ -3,6 +3,7 @@
 import State.{State => State2}
 import State.RNG
 
+
 object Gen extends App{
   /*
   The library developed in this chapter goes through several iterations. This file is just the
@@ -18,15 +19,57 @@ object Gen extends App{
   // max of list of same elements == element
   // max of list with 1 element == 1 element
   //
+  import Gen._
+  import Prop._
 
-  trait Prop {
-    def check: Boolean
-    def &&(other: Prop): Boolean = this.check && other.check
+  case class Prop(run: (TestCases, RNG) => Result){
+    def &&(p: Prop): Prop = Prop {
+      (test, rng) => run(test,rng) match {
+        case Passes => p.run(test,rng)
+        case x => x
+      }
+    }
+
+    def ||(p:Prop): Prop = Prop {
+      (test, rng) => run(test, rng) match {
+        case Falsified(msg, _) => p.tag(msg).run(test, rng)
+        case x => x
+      }
+    }
+
+    def tag(msg: String): Prop = Prop {
+      (test, rng) => run(test, rng) match {
+        case Falsified(f, n) => Falsified(s"$msg\n$f", n)
+        case x => x
+      }
+    }
+
+
   }
+
 
   object Prop {
     def forAll[A](gen: Gen[A])(f: A => Boolean): Prop = ???
+    type SuccessCount = Int
+    type FailedCase = String
+
+    sealed trait Result {
+      def isFalsified: Boolean
+    }
+    final case object Passes extends Result {
+      def isFalsified = false
+    }
+    final case class Falsified(failure: FailedCase,
+                               success: SuccessCount) extends Result {
+      override def isFalsified: Boolean = true
+    }
+
   }
+
+  type TestCases = Int
+
+
+
 
   object Gen {
     def unit[A](a: => A): Gen[A] = Gen(State.State.unit(a))
