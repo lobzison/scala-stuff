@@ -47,7 +47,6 @@ object Gen extends App{
 
   }
 
-
   object Prop {
     def forAll[A](gen: Gen[A])(f: A => Boolean): Prop = ???
     type SuccessCount = Int
@@ -66,10 +65,15 @@ object Gen extends App{
 
   }
 
+  case class SGen[+A](forSize: Int => Gen[A]) {
+    def listOf[A](g: Gen[A]): SGen[List[A]] = SGen {
+      n => g.listOfN(n)
+    }
+    
+  }
+
+
   type TestCases = Int
-
-
-
 
   object Gen {
     def unit[A](a: => A): Gen[A] = Gen(State.State.unit(a))
@@ -95,13 +99,9 @@ object Gen extends App{
     def listOfN(size: Int): Gen[List[A]] = Gen.listOfN(size, this)
     def flatMap[B](f: A => Gen[B]): Gen[B] = Gen(sample.flatMap(a => f(a).sample))
     def listOfN(size: Gen[Int]): Gen[List[A]] = size.flatMap(x => this.listOfN(x))
-}
-
-
-
-  trait SGen[+A] {
-
+    def unsized: SGen[A] = SGen(_ => Gen(sample))
   }
+
 
   val a = Gen(State.State(RNG.double))
   val b = a.listOfN(10)
