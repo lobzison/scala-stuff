@@ -1,0 +1,48 @@
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:195:65: Procedure syntax is deprecated. Convert procedure `preRestart` to method by adding `: Unit =`.[0m
+[0m[[0m[33mwarn[0m] [0m[0m  override def preRestart(reason:Throwable, message:Option[Any]){[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                                ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:102:22: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case None => Unit[0m
+[0m[[0m[33mwarn[0m] [0m[0m                     ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:119:22: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case None => Unit[0m
+[0m[[0m[33mwarn[0m] [0m[0m                     ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:190:22: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case None => Unit[0m
+[0m[[0m[33mwarn[0m] [0m[0m                     ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:217:22: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case None => Unit[0m
+[0m[[0m[33mwarn[0m] [0m[0m                     ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:210:52: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m    context.system.scheduler.scheduleOnce(1 second){[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:230:19: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m        case _ => Unit[0m
+[0m[[0m[33mwarn[0m] [0m[0m                  ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:223:52: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m    context.system.scheduler.scheduleOnce(1 second){[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:240:20: discarded non-Unit value[0m
+[0m[[0m[33mwarn[0m] [0m[0m      case None => Unit[0m
+[0m[[0m[33mwarn[0m] [0m[0m                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:201:41: postfix operator millis should be enabled[0m
+[0m[[0m[33mwarn[0m] [0m[0mby making the implicit value scala.language.postfixOps visible.[0m
+[0m[[0m[33mwarn[0m] [0m[0mThis can be achieved by adding the import clause 'import scala.language.postfixOps'[0m
+[0m[[0m[33mwarn[0m] [0m[0mor by setting the compiler option -language:postfixOps.[0m
+[0m[[0m[33mwarn[0m] [0m[0mSee the Scaladoc for value scala.language.postfixOps for a discussion[0m
+[0m[[0m[33mwarn[0m] [0m[0mwhy the feature should be explicitly enabled.[0m
+[0m[[0m[33mwarn[0m] [0m[0m  context.system.scheduler.schedule(100 millis, 50 millis) {[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                        ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:201:52: postfix operator millis should be enabled[0m
+[0m[[0m[33mwarn[0m] [0m[0mby making the implicit value scala.language.postfixOps visible.[0m
+[0m[[0m[33mwarn[0m] [0m[0m  context.system.scheduler.schedule(100 millis, 50 millis) {[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                   ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:210:45: postfix operator second should be enabled[0m
+[0m[[0m[33mwarn[0m] [0m[0mby making the implicit value scala.language.postfixOps visible.[0m
+[0m[[0m[33mwarn[0m] [0m[0m    context.system.scheduler.scheduleOnce(1 second){[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                            ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/lobzison/code/src/github.com/lobzison/kvstore/src/main/scala/kvstore/Replica.scala:223:45: postfix operator second should be enabled[0m
+[0m[[0m[33mwarn[0m] [0m[0mby making the implicit value scala.language.postfixOps visible.[0m
+[0m[[0m[33mwarn[0m] [0m[0m    context.system.scheduler.scheduleOnce(1 second){[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                            ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m13 warnings found[0m
