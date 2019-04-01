@@ -1,6 +1,6 @@
 package protocols
 
-import akka.actor.typed.{ActorContext, ExtensibleBehavior, _}
+import akka.actor.typed.{Behavior, ExtensibleBehavior, Signal, ActorContext}
 import akka.actor.typed.scaladsl._
 
 object SelectiveReceive {
@@ -16,19 +16,27 @@ object SelectiveReceive {
       * Hint: Implement an [[ExtensibleBehavior]], use a [[StashBuffer]] and [[Behavior]] helpers such as `start`,
       * `validateAsInitial`, `interpretMessage`,`canonicalize` and `isUnhandled`.
       */
-    //TODO: Unstash
+    //TODO: Fuck the StashBuffer. It's not immutable, it don't have a way to remove head, it don't have fold.
+    //Screw this, I'll fix it with the Queue.
+    import akka.actor.typed.Behavior.{start, validateAsInitial, interpretMessage, canonicalize, isUnhandled}
     def apply[T](bufferSize: Int, initialBehavior: Behavior[T]): Behavior[T] = {
-        var stash = StashBuffer[T](30)
-        new ExtensibleBehavior[T] {
-            import akka.actor.typed.Behavior.{start, validateAsInitial, interpretMessage, canonicalize, isUnhandled}
-            override def receive(ctx: ActorContext[T], msg: T): Behavior[T] = {
-                val started = validateAsInitial(start(initialBehavior, ctx))
-                val nextBehavior = interpretMessage(started, ctx, msg)
-                if (isUnhandled(nextBehavior)) stash.stash(msg)
-                canonicalize(nextBehavior, started, ctx)
-            }
-
-            override def receiveSignal(ctx: ActorContext[T], msg: Signal): Behavior[T] = initialBehavior
-        }
+      new Selective[T](initialBehavior, StashBuffer[T](bufferSize))
     }
+
+  class Selective[T](behavior: Behavior[T], stash: StashBuffer[T])
+    extends ExtensibleBehavior[T] {
+    override def receive(ctx: ActorContext[T], msg: T): Behavior[T] = {
+      val started = validateAsInitial(start(behavior, ctx))
+      val next = interpretMessage(started, ctx, msg)
+      if (isUnhandled(next)) {
+        new Selective[T](canonicalize(next, behavior, ctx), stash.stash(msg))
+      } else {
+        new Selective[T](canonicalize(next, behavior, ctx), stash)
+      }
+    }
+
+    override def receiveSignal(ctx: ActorContext[T], msg: Signal): Behavior[T] =
+      Behavior.same
+
+  }
 }
