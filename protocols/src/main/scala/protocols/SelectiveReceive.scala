@@ -54,9 +54,9 @@ object SelectiveReceive {
     @tailrec
     private def sendUntilNotChanged(queue: Queue[T], behavior: Behavior[T], ctx: ActorContext[T]):
       (Queue[T], Behavior[T], ActorContext[T]) = {
-      val newState = sendUntilReceived(queue, behavior, ctx)
-      if (newState._1 == queue) newState
-      else sendUntilNotChanged(newState._1, newState._2, newState._3)
+      val state@(newQ, newBeh, newCtx) = sendUntilReceived(queue, behavior, ctx)
+      if (newQ == queue) state
+      else sendUntilNotChanged(newQ, newBeh, newCtx)
     }
 
     @tailrec
