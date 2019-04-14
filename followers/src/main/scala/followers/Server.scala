@@ -5,7 +5,7 @@ import akka.event.Logging
 import akka.stream.scaladsl.{BroadcastHub, Flow, Framing, Keep, MergeHub, Sink, Source}
 import akka.stream.{ActorAttributes, Materializer}
 import akka.util.ByteString
-import followers.model.Event.{Follow, Unfollow}
+import followers.model.Event._
 import followers.model.{Event, Followers, Identity}
 
 import scala.collection.SortedSet
@@ -59,7 +59,7 @@ object Server {
     * (and have a look at `Keep.right`).
     */
   val identityParserSink: Sink[ByteString, Future[Identity]] =
-    unimplementedSink
+    reframedFlow.map(Identity.parse).toMat(Sink.head)(Keep.right)
 
   /**
     * A flow that consumes unordered messages and produces messages ordered by `sequenceNr`.
@@ -125,7 +125,13 @@ object Server {
     * @param eventAndFollowers Event and current state of followers
     */
   def isNotified(userId: Int)(eventAndFollowers: (Event, Followers)): Boolean =
-    ???
+    eventAndFollowers match {
+      case (Broadcast(_), _) => true
+      case (Follow(_, _, to), _) if to == userId => true
+      case (PrivateMsg(_, _, to), _) if to == userId => true
+      case (StatusUpdate(_, _), set) if set contains userId => true
+      case _ => false
+    }
 
   // Utilities to temporarily have unimplemented parts of the program
   private def unimplementedFlow[A, B, C]: Flow[A, B, C] =
