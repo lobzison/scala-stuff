@@ -21,7 +21,8 @@ import scala.util.Random
 class FollowersSuite extends TestKit(ActorSystem("FollowersSuite"))
   with FunSuiteLike
   with BeforeAndAfterAll
-  with ScalaFutures {
+  with ScalaFutures
+  with ExtraStreamOps {
 
   import system.dispatcher
   implicit val materializer: Materializer = ActorMaterializer()

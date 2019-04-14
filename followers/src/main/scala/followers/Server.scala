@@ -9,7 +9,6 @@ import followers.model.Event._
 import followers.model.{Event, Followers, Identity}
 
 import scala.collection.SortedSet
-import scala.collection.immutable.Queue
 import scala.concurrent.{ExecutionContext, Future, Promise}
 
 /**
@@ -33,7 +32,7 @@ object Server {
     * Hint: you may find the [[Framing]] flows useful.
     */
   val reframedFlow: Flow[ByteString, String, NotUsed] =
-    Framing.delimiter(ByteString("\n"), 150, false).map(_.utf8String)
+    Framing.delimiter(ByteString("\n"),512, allowTruncation = false).map(_.utf8String)
 
   /**
     * A flow that consumes chunks of bytes and produces [[Event]] messages.
@@ -73,25 +72,25 @@ object Server {
     * You may want to use `statefulMapConcat` in order to keep the state needed for this
     * operation around in the operator.
     */
+  implicit val ord: Ordering[Event] = Ordering.by(_.sequenceNr)
   val reintroduceOrdering: Flow[Event, Event, NotUsed] =
     Flow[Event].statefulMapConcat{() =>
       var expect = 1
-      var buffer = Map[Int, Event]()
+      var buffer = SortedSet[Event]()
       elem => {
-        if (elem.sequenceNr == expect) {
-          expect += 1
-          Queue(elem)
-        }
-        else {
-          buffer += (elem.sequenceNr -> elem)
-          var send = Queue[Event]()
-          while (buffer.contains(expect)) {
-            send = send.enqueue(buffer(expect))
-            buffer -= expect
-            expect += 1
+        buffer += elem
+        val toSend = buffer
+          .takeWhile{el:Event => {
+            if (el.sequenceNr == expect){
+              expect += 1
+              true
+            }
+            else false
+            }
           }
-          send
-        }
+          .toList
+        buffer = buffer.drop(toSend.length)
+        toSend
       }
     }
 
@@ -105,8 +104,9 @@ object Server {
     */
   val followersFlow: Flow[Event, (Event, Followers), NotUsed] =
     Flow[Event].statefulMapConcat{() =>
-      var state: Followers = Map[Int, Set[Int]]().withDefaultValue(Set[Int]())
-      elem => { elem match {
+      var state: Followers = Map[Int, Set[Int]]().withDefaultValue(Set())
+      elem => {
+        elem match {
         case Follow(_, from, to) =>
           state += (from -> (state(from) + to))
         case Unfollow(_, from, to) =>
@@ -129,15 +129,9 @@ object Server {
       case (Broadcast(_), _) => true
       case (Follow(_, _, to), _) if to == userId => true
       case (PrivateMsg(_, _, to), _) if to == userId => true
-      case (StatusUpdate(_, _), set) if set contains userId => true
+      case (StatusUpdate(_, from), followers) if followers(userId) contains from => true
       case _ => false
     }
-
-  // Utilities to temporarily have unimplemented parts of the program
-  private def unimplementedFlow[A, B, C]: Flow[A, B, C] =
-    Flow.fromFunction[A, B](_ => ???).mapMaterializedValue(_ => ??? : C)
-
-  private def unimplementedSink[A, B]: Sink[A, B] = Sink.ignore.mapMaterializedValue(_ => ??? : B)
 
 }
 
@@ -170,7 +164,7 @@ class Server()(implicit executionContext: ExecutionContext, materializer: Materi
       * of the followers Map.
       */
     val incomingDataFlow: Flow[ByteString, (Event, Followers), NotUsed] =
-      unimplementedFlow
+      eventParserFlow via reintroduceOrdering via followersFlow
 
     // Wires the MergeHub and the BroadcastHub together and runs the graph
     MergeHub.source[ByteString](256)
@@ -194,7 +188,7 @@ class Server()(implicit executionContext: ExecutionContext, materializer: Materi
     * `Flow.fromSinkAndSourceCoupled` to find how to achieve that.
     */
   val eventsFlow: Flow[ByteString, Nothing, NotUsed] =
-    unimplementedFlow
+    Flow.fromSinkAndSourceCoupled(inboundSink, Source.maybe[Nothing])
 
   /**
     * @return The source of events for the given user
@@ -209,7 +203,7 @@ class Server()(implicit executionContext: ExecutionContext, materializer: Materi
     * Status Update:   All current followers of the From User ID should be notified
     */
   def outgoingFlow(userId: Int): Source[ByteString, NotUsed] =
-    ???
+    broadcastOut.filter(isNotified(userId)).map(_._1.render)
 
   /**
    * The "final form" of the client flow.
@@ -234,7 +228,11 @@ class Server()(implicit executionContext: ExecutionContext, materializer: Materi
 
     // A sink that parses the client identity and completes `clientIdPromise` with it
     val incoming: Sink[ByteString, NotUsed] =
-      ???
+      identityParserSink.mapMaterializedValue{mat =>
+        clientIdPromise.completeWith(mat)
+        NotUsed
+      }
+
 
     val outgoing = Source.fromFutureSource(clientIdPromise.future.map { identity =>
       outgoingFlow(identity.userId)
