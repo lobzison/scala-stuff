@@ -102,12 +102,13 @@ class Replica(val arbiter: ActorRef, persistenceProps: Props) extends Actor with
       //send acks for deleted ones
       toReplicate foreach{
         case (id, (to, _, _)) if isAck(id) => to ! OperationAck(id)
+        case _ => ()
       }
       //update secondaries and replicators
-      secondaries =
-        replicasNew
+      secondaries = secondaries ++
+        newJoiners
         .map(x => (x,context.system.actorOf(Props(classOf[Replicator], x))))
-        .toMap
+        .toMap -- leavers
       replicators = secondaries.values.toSet
       //send current state to new joiners
       val replicatorJoiners = for {
