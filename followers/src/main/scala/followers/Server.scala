@@ -5,9 +5,11 @@ import akka.event.Logging
 import akka.stream.scaladsl.{BroadcastHub, Flow, Framing, Keep, MergeHub, Sink, Source}
 import akka.stream.{ActorAttributes, Materializer}
 import akka.util.ByteString
+import followers.model.Event.{Follow, Unfollow}
 import followers.model.{Event, Followers, Identity}
 
 import scala.collection.SortedSet
+import scala.collection.immutable.Queue
 import scala.concurrent.{ExecutionContext, Future, Promise}
 
 /**
@@ -31,7 +33,7 @@ object Server {
     * Hint: you may find the [[Framing]] flows useful.
     */
   val reframedFlow: Flow[ByteString, String, NotUsed] =
-    unimplementedFlow
+    Framing.delimiter(ByteString("\n"), 150, false).map(_.utf8String)
 
   /**
     * A flow that consumes chunks of bytes and produces [[Event]] messages.
@@ -44,7 +46,7 @@ object Server {
     * Hint: reuse `reframedFlow`
     */
   val eventParserFlow: Flow[ByteString, Event, NotUsed] =
-    unimplementedFlow
+    reframedFlow.map(Event.parse)
 
   /**
     * Implement a Sink that will look for the first [[Identity]]
@@ -72,7 +74,26 @@ object Server {
     * operation around in the operator.
     */
   val reintroduceOrdering: Flow[Event, Event, NotUsed] =
-    unimplementedFlow
+    Flow[Event].statefulMapConcat{() =>
+      var expect = 1
+      var buffer = Map[Int, Event]()
+      elem => {
+        if (elem.sequenceNr == expect) {
+          expect += 1
+          Queue(elem)
+        }
+        else {
+          buffer += (elem.sequenceNr -> elem)
+          var send = Queue[Event]()
+          while (buffer.contains(expect)) {
+            send = send.enqueue(buffer(expect))
+            buffer -= expect
+            expect += 1
+          }
+          send
+        }
+      }
+    }
 
   /**
     * A flow that associates a state of [[Followers]] to
@@ -83,7 +104,18 @@ object Server {
     *  - you may find the `statefulMapConcat` operation useful.
     */
   val followersFlow: Flow[Event, (Event, Followers), NotUsed] =
-    unimplementedFlow
+    Flow[Event].statefulMapConcat{() =>
+      var state: Followers = Map[Int, Set[Int]]().withDefaultValue(Set[Int]())
+      elem => { elem match {
+        case Follow(_, from, to) =>
+          state += (from -> (state(from) + to))
+        case Unfollow(_, from, to) =>
+          state += (from -> (state(from) - to))
+        case _ => ()
+      }
+        List((elem, state))
+      }
+    }
 
   /**
     * @return Whether the given user should be notified by the incoming `Event`,
