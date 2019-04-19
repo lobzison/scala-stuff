@@ -12,9 +12,9 @@ import scala.concurrent.duration._
 
 
 object UserNode{
-  //user sends
+
   case class Query(query: String)
-  //user receives
+
   case class QueryResult(result: String)
   case object InvalidQuery
   case object Timeout
@@ -24,9 +24,8 @@ class UserNode extends Actor {
   import context.dispatcher
 
   var notExecuted: Map[Long, (ActorRef, ActorRef)] = Map.empty
-  var executors: Map[ActorRef, Long] = Map.empty
 
-  override def receive: Receive = LoggingReceive{
+  override def receive: Receive = {
     case Query(query) =>
       validate(query) match {
         case Some(s) =>
@@ -36,7 +35,6 @@ class UserNode extends Actor {
             .actorOf(Props[QueryExecutor])
           val id = nextSeq
           notExecuted += id -> ((executor, sender))
-          executors += executor -> id
           scheduleQueryTimeout(id)
           executor ! QueryRequest(id, s)
         case None => sender ! InvalidQuery
@@ -48,7 +46,6 @@ class UserNode extends Actor {
             sender ! QueryResult(r)
         }
       notExecuted -= id
-      executors -= sender
   }
 
   def scheduleQueryTimeout(id: Long): Unit = {
@@ -56,7 +53,6 @@ class UserNode extends Actor {
       notExecuted get id foreach {
         case (executor, sender) =>
         notExecuted -= id
-        executors -= executor
         executor ! PoisonPill
         sender ! Timeout
       }

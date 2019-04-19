@@ -9,10 +9,10 @@ object QueryExecutor {
 }
 class QueryExecutor extends Actor {
   val es = ExternalSystem("DBMQKAFKAWHATEWER")
-  es.openConnection()
 
   override def receive: Receive = {
     case QueryRequest(id, q) =>
+      es.openConnection()
       val results = es.executeQuery(q)
       sender ! QueryReply(id, results)
   }
