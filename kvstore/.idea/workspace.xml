@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1945c728-ac62-4045-a7e3-f38829ccfb9d" name="Default Changelist" comment="Finished implementation">
-      <change afterPath="$PROJECT_DIR$/../untyped/src/main/scala/Main.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/ExternalSystem.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/QueryExecutor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/UserNode.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/Utils.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/QueryExecutor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/QueryExecutor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/UserNode.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../untyped/src/main/scala/untyped/UserNode.scala" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/project/project/target/" />
@@ -66,8 +62,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Replica.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="27" />
+            <state relative-caret-position="-486">
+              <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+              <folding>
+                <element signature="e#958#974#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Arbiter.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="558">
+              <caret line="32" column="12" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Persistence.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -204,6 +221,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -262,7 +280,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -416,13 +433,13 @@
     <option name="modificationStamps">
       <map>
         <entry key="$PROJECT_DIR$" value="10804849282000" />
-        <entry key="$PROJECT_DIR$/build.sbt" value="4155880897" />
-        <entry key="$PROJECT_DIR$/project/MOOCPlugin.scala" value="3710804549" />
-        <entry key="$PROJECT_DIR$/project/StudentPlugin.scala" value="991354274" />
-        <entry key="$PROJECT_DIR$/project/StyleChecker.scala" value="1829885798" />
-        <entry key="$PROJECT_DIR$/project/build.properties" value="2096222171" />
-        <entry key="$PROJECT_DIR$/project/buildSettings.sbt" value="2147578330" />
-        <entry key="$PROJECT_DIR$/project/plugins.sbt" value="3251424836" />
+        <entry key="$PROJECT_DIR$/build.sbt" value="4002746560" />
+        <entry key="$PROJECT_DIR$/project/MOOCPlugin.scala" value="2976220008" />
+        <entry key="$PROJECT_DIR$/project/StudentPlugin.scala" value="3842137593" />
+        <entry key="$PROJECT_DIR$/project/StyleChecker.scala" value="2718938948" />
+        <entry key="$PROJECT_DIR$/project/build.properties" value="2678115315" />
+        <entry key="$PROJECT_DIR$/project/buildSettings.sbt" value="2446188345" />
+        <entry key="$PROJECT_DIR$/project/plugins.sbt" value="4025950404" />
       </map>
     </option>
     <option name="projectSyncType">
@@ -499,9 +516,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25885227" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26190478" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -557,13 +573,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/TestActor2.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/TestActorRunner.scala" />
     <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/TestActor.scala" />
-    <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Arbiter.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="32" column="12" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application.conf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -597,13 +606,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="42" column="8" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Persistence.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -667,10 +669,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Arbiter.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="558">
+          <caret line="32" column="12" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Persistence.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/kvstore/Replica.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="27" />
+        <state relative-caret-position="-486">
+          <caret line="23" column="36" lean-forward="true" selection-start-line="23" selection-start-column="36" selection-end-line="23" selection-end-column="36" />
+          <folding>
+            <element signature="e#958#974#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

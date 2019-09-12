@@ -4,7 +4,6 @@ import akka.actor._
 import untyped.Utils._
 import UserNode._
 import akka.actor.SupervisorStrategy.Restart
-import akka.event.LoggingReceive
 import untyped.QueryExecutor._
 
 import scala.language.postfixOps
