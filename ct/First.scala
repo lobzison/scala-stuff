@@ -40,23 +40,34 @@ object First extends App {
     }
 
     trait Monoid[M] {
-        def combin`e(m1: M, m2: M): M
+        def combine(m1: M, m2: M): M
         def empty: M
     }
 
     object Monoid {
+        def apply[A: Monoid] = implicitly[Monoid[A]]
+        implicit class MonoidOps[A: Monoid](x: A) {
+            def combine(y: A) = Monoid[A].combine(x, y)
+            def empty = Monoid[A].empty
+        }
+    }
+
+    object MonoidInstances {
         implicit val boolAndMonoid: Monoid[Boolean] = new Monoid[Boolean] {
             def combine(m1: Boolean, m2: Boolean): Boolean = m1 && m2
             def empty = true
-        }
-        implicit val boolOrMonoid: Monoid[Boolean] = new Monoid[Boolean] {
-            def combine(m1: Boolean, m2: Boolean): Boolean = m1 || m2
-            def empty = false
         }
         implicit val moduloThree: Monoid[Int] = new Monoid[Int] {
             def combine(i1: Int, i2: Int): Int = (i1 + i2) % 3
             def empty = 3
         }
     }
+
+    import Monoid._
+    import MonoidInstances._
+
+    println(boolAndMonoid.combine(true, false))
+    println(true.combine(false))
+    
 
 }
