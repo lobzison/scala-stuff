@@ -1,0 +1,85 @@
+Error: Invalid or corrupt jarfile /usr/local/Cellar/bloop/1.3.4/bin/blp-server
+Detected java options are ''
+Unable to load nailgun-version.properties.
+NGServer [UNKNOWN] started on address localhost/127.0.0.1 port 8212.
+NGSession shutting down
+NGSession shutting down
+Could not connect to server 127.0.0.1:8212
+
+Have you forgotten to start bloop's server? Run it with `bloop server`.
+Check our usage instructions in https://scalacenter.github.io/bloop/
+Defaulting on nailgun port 8212
+There is no server running at port 8212
+Starting the bloop server... this may take a few seconds
+Running /usr/local/Cellar/bloop/1.3.4/bin/blp-server as a jar...
+Shelling out with '['java', '-jar', '/usr/local/Cellar/bloop/1.3.4/bin/blp-server']' ...
+Running /usr/local/Cellar/bloop/1.3.4/bin/blp-server as a script...
+Shelling out in Unix system with ['sh', '/usr/local/Cellar/bloop/1.3.4/bin/blp-server']
+Error: Invalid or corrupt jarfile /usr/local/Cellar/bloop/1.3.4/bin/blp-server
+Detected java options are ''
+Unable to load nailgun-version.properties.
+NGServer [UNKNOWN] started on address localhost/127.0.0.1 port 8212.
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+[W] Nailgun client read future timed out after 11000 ms
+Client in /Users/lobzison/code/src/github.com/lobzison/cats/cats-sandbox/.bloop disconnected with a 'Heartbeat' event. Cancelling tasks...
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+Client in /Users/lobzison/code/src/github.com/lobzison/openapi/scala_server/.bloop disconnected with a 'SocketError' event. Cancelling tasks...
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+[W] Nailgun client read future raised an exception
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+[W] Internal error in session
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at com.martiansoftware.nailgun.NGCommunicator.readCommandContext(NGCommunicator.java:140)
+	at com.martiansoftware.nailgun.NGSession.run(NGSession.java:197)
+NGSession shutting down
+NGSession shutting down
+NGSession shutting down
+[W] Exception shutting down Nailgun server
+Could not connect to server 127.0.0.1:8212
+
+Have you forgotten to start bloop's server? Run it with `bloop server`.
+Check our usage instructions in https://scalacenter.github.io/bloop/
+Defaulting on nailgun port 8212
+There is no server running at port 8212
+Starting the bloop server... this may take a few seconds
+Running /usr/local/Cellar/bloop/1.3.4/bin/blp-server as a jar...
+Shelling out with '['java', '-jar', '/usr/local/Cellar/bloop/1.3.4/bin/blp-server']' ...
+Running /usr/local/Cellar/bloop/1.3.4/bin/blp-server as a script...
+Shelling out in Unix system with ['sh', '/usr/local/Cellar/bloop/1.3.4/bin/blp-server']
+Error: Invalid or corrupt jarfile /usr/local/Cellar/bloop/1.3.4/bin/blp-server
+Detected java options are ''
+Unable to load nailgun-version.properties.
+NGServer [UNKNOWN] started on address localhost/127.0.0.1 port 8212.
+Error: Invalid or corrupt jarfile /usr/local/Cellar/bloop/1.3.4/bin/blp-server
+Detected java options are ''
+Unable to load nailgun-version.properties.
+NGServer [UNKNOWN] started on address localhost/127.0.0.1 port 8212.
+Client in /Users/lobzison/code/src/github.com/lobzison/cats/cats-sandbox/.bloop disconnected with a 'SocketError' event. Cancelling tasks...
+The cancellation could not destroy process 51457
