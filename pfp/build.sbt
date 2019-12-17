@@ -10,7 +10,9 @@ libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-effect" % "2.0.0",
   "dev.profunktor" %% "console4cats" % "0.8.0",
   "io.estatico" %% "newtype" % "0.4.3",
-  "eu.timepit" %% "refined" % "0.9.10"
+  "eu.timepit" %% "refined" % "0.9.10",
+  "dev.zio" %% "zio" % "1.0.0-RC17",
+  "dev.zio" %% "zio-interop-cats" % "2.0.0.0-RC10"
 )
 
 scalacOptions += "-Ymacro-annotations"

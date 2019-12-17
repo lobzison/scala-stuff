@@ -6,7 +6,8 @@ import cats.implicits._
 import cats.effect.IO
 import scala.concurrent.ExecutionContext
 
-object StateSandbox extends App {
+object StateSandbox //extends App 
+{
     trait Counter[F[_]] {
         def incr: F[Unit]
         def get: F[Int]
